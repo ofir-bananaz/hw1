@@ -88,7 +88,6 @@ public class GeoPoint {
   	public GeoPoint(int latitude, int longitude) {
 		this.latitude=latitude;
 		this.longitude=longitude;
-
   	}
 
   	 
@@ -106,7 +105,7 @@ public class GeoPoint {
      * @return the latitude of this in millionths of degrees.
      */
   	public int getLongitude() {
-        return longitude;
+  		return longitude;
   	}
 
 
@@ -118,15 +117,20 @@ public class GeoPoint {
      **/
   	public double distanceTo(GeoPoint gp) {
 
-  	    int y1 = (int) (latitude * (KM_PER_DEGREE_LATITUDE * MILLION));
-  	    int y2 = (int) (gp.getLatitude() * (KM_PER_DEGREE_LATITUDE * MILLION));
-  	    int x1 = (int) (longitude * (KM_PER_DEGREE_LONGITUDE * MILLION));
-  	    int x2 = (int) (gp.getLongitude() * (KM_PER_DEGREE_LONGITUDE * MILLION));
-  	    int DistanceY = (int) Math.pow((y1-y2),2);
-  	    int DistanceX = (int) Math.pow((x1-x2),2);
-  	    int Distance = (int) Math.sqrt(DistanceY + DistanceX);
-  	    return Distance/MILLION;
+        //Latitude and longitude
+        int longitude1 = longitude;
+        int latitude1 = latitude;
+        int longitude2 = gp.getLongitude();
+        int latitude2 = gp.getLatitude();
 
+        //Latitude and Longitude differences
+        int y = Math.abs(latitude1 - latitude2)*(int)KM_PER_DEGREE_LATITUDE;
+        int x = Math.abs(longitude1 - longitude2)*(int)KM_PER_DEGREE_LONGITUDE;
+
+        //Distance final calculation (including division by million).
+        double Distance =Math.sqrt(Math.pow(x,2)+Math.pow(y,2))/MILLION;
+
+        return Distance;
   	}
 
 
@@ -135,23 +139,34 @@ public class GeoPoint {
      * @requires gp != null && !this.equals(gp)
      * @return the compass heading h from this to gp, in degrees, using the
      *         flat-surface, near the Technion approximation, such that
-     *         0 <= h < 360. In compass headings, north = 0, east = 90,
+     *         0 <= h < 360. In compass headings, north  = 0, east = 90,
      *         south = 180, and west = 270.
      **/
   	public double headingTo(GeoPoint gp) {
-		 //	Implementation hints:
-		 // 1. You may find the mehtod Math.atan2() useful when
-		 // implementing this method. More info can be found at:
-		 // http://docs.oracle.com/javase/8/docs/api/java/lang/Math.html
-		 //
-		 // 2. Keep in mind that in our coordinate system, north is 0
-		 // degrees and degrees increase in the clockwise direction. By
-		 // mathematical convention, "east" is 0 degrees, and degrees
-		 // increase in the counterclockwise direction. 
-		 
-  		// TODO Implement this method
-  	}
+        //	Implementation hints:
+        // 1. You may find the method Math.atan2() useful when
+        // implementing this method. More info can be found at:
+        // http://docs.oracle.com/javase/8/docs/api/java/lang/Math.html
+        //
+        // 2. Keep in mind that in our coordinate system, north is 0
+        // degrees and degrees increase in the clockwise direction. By
+        // mathematical convention, "east" is 0 degrees, and degrees
+        // increase in the counterclockwise direction.
 
+        //Latitude and longitude
+
+        int longitude1 = longitude;
+        int latitude1 = latitude;
+        int longitude2 = gp.getLongitude();
+        int latitude2 = gp.getLatitude();
+
+        int diffLong = longitude1 - longitude2;
+        int diffLat = latitude1 - latitude2;
+
+        double h = Math.toDegrees(Math.atan2(diffLat,diffLong));
+
+        return h;
+    }
 
   	/**
      * Compares the specified Object with this GeoPoint for equality.
