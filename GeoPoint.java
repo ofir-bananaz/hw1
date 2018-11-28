@@ -54,8 +54,10 @@ public class GeoPoint {
      */
   	public static final double KM_PER_DEGREE_LONGITUDE = 93.681;
 
-  	public int latitude;
-    public int longitude;
+  	public static final int MILLION = 1000000;
+
+  	private int latitude;
+    private int longitude;
 	// Implementation hint:
 	// Doubles and floating point math can cause some problems. The exact
 	// value of a double can not be guaranteed except within some epsilon.
@@ -74,15 +76,6 @@ public class GeoPoint {
     // (gp.longitude <= MAX_LONGITUDE) && (gp.longitude >= MIN_LONGITUDE) and
     // (gp.latitude <= MAX__LATITUDE) && (gp.latitude >= MIN_LATITUDE)
 
-    //
-	// (r.denom >= 0) &&
-    // (r.denom > 0 ==> there does not exist integer i > 1 such that
-	// r.numer mod i = 0 and r.denom mod i = 0)
-	// (in other words: the denom. is always non-negative and if the
-	// denom. is non-zero, the fraction represented is in reduced
-	// form.
-
-  	
   	/**
   	 * Constructs GeoPoint from a latitude and longitude.
      * @requires the point given by (latitude, longitude) in millionths
@@ -93,7 +86,9 @@ public class GeoPoint {
      *          given in millionths of degrees.
    	 **/
   	public GeoPoint(int latitude, int longitude) {
-  		// TODO Implement this constructor
+		this.latitude=latitude;
+		this.longitude=longitude;
+
   	}
 
   	 
@@ -102,7 +97,7 @@ public class GeoPoint {
      * @return the latitude of this in millionths of degrees.
      */
   	public int getLatitude() {
-  		// TODO Implement this method
+        return latitude;
   	}
 
 
@@ -111,7 +106,7 @@ public class GeoPoint {
      * @return the latitude of this in millionths of degrees.
      */
   	public int getLongitude() {
-  		// TODO Implement this method
+        return longitude;
   	}
 
 
@@ -122,7 +117,16 @@ public class GeoPoint {
      *         the Technion approximation.
      **/
   	public double distanceTo(GeoPoint gp) {
-  		// TODO Implement this method
+
+  	    int y1 = (int) (latitude * (KM_PER_DEGREE_LATITUDE * MILLION));
+  	    int y2 = (int) (gp.getLatitude() * (KM_PER_DEGREE_LATITUDE * MILLION));
+  	    int x1 = (int) (longitude * (KM_PER_DEGREE_LONGITUDE * MILLION));
+  	    int x2 = (int) (gp.getLongitude() * (KM_PER_DEGREE_LONGITUDE * MILLION));
+  	    int DistanceY = (int) Math.pow((y1-y2),2);
+  	    int DistanceX = (int) Math.pow((x1-x2),2);
+  	    int Distance = (int) Math.sqrt(DistanceY + DistanceX);
+  	    return Distance/MILLION;
+
   	}
 
 
