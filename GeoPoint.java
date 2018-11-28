@@ -53,7 +53,9 @@ public class GeoPoint {
      * "flat earth" simplification.
      */
   	public static final double KM_PER_DEGREE_LONGITUDE = 93.681;
-  	
+
+  	public int latitude;
+    public int longitude;
 	// Implementation hint:
 	// Doubles and floating point math can cause some problems. The exact
 	// value of a double can not be guaranteed except within some epsilon.
@@ -64,9 +66,22 @@ public class GeoPoint {
 	// and distance computations). Because of this, you should consider 
 	// using ints for your internal representation of GeoPoint. 
 
-  	
-  	// TODO Write abstraction function and representation invariant
-  	
+
+	// Abstraction Function:
+	// Represent a GeoPoint gp with gp.latitude = latitude and gp.longitude = longitude.
+
+	// Representation invariant for every GeoPoint gp:
+    // (gp.longitude <= MAX_LONGITUDE) && (gp.longitude >= MIN_LONGITUDE) and
+    // (gp.latitude <= MAX__LATITUDE) && (gp.latitude >= MIN_LATITUDE)
+
+    //
+	// (r.denom >= 0) &&
+    // (r.denom > 0 ==> there does not exist integer i > 1 such that
+	// r.numer mod i = 0 and r.denom mod i = 0)
+	// (in other words: the denom. is always non-negative and if the
+	// denom. is non-zero, the fraction represented is in reduced
+	// form.
+
   	
   	/**
   	 * Constructs GeoPoint from a latitude and longitude.
