@@ -46,18 +46,22 @@ public class GeoSegment  {
 	private homework1.GeoPoint p1;
 	private homework1.GeoPoint p2;
 	private double length;
-	private double angle;
+	private double heading;
 
 	// TODO Write abstraction function and representation invariant
 
 	// Abstraction function:
 	// represents GeoSegment gs:
 	// gs.length is a straight-line distance between p1 and p2, in kilometers
-	// gs.heading is compass heading from p1 to p2, in degrees
+	// gs.heading is compass heading is a nonnegative real number less than 360.
+	// gs.name e is given to all GeoSegment objects so that it is possible to
+	// differentiate between two GeoSegment objects with identical
+	// GeoPoint endpoints.
 
 	// Representation invariant:
-	// (name != null), (GeoSegment.p1 != null), (GeoSegment.p2 != null), (GeoSegment.p1 != GeoSegment.p2)
-	// name is a Geographic Segment's short description
+	// (name != null), (p1 != null), (p2 != null), (p1 != p2)
+	//
+	// length is the distance between
 
 
 	/**
@@ -66,7 +70,9 @@ public class GeoSegment  {
 	 * @effects constructs a new GeoSegment with the specified name and endpoints.
 	 **/
 	public GeoSegment(String name, homework1.GeoPoint p1, homework1.GeoPoint p2) {
-		// TODO Implement this method
+		this.name = name;
+		this.p1 = p1;
+		this.p2 = p2;
 	}
 
 
@@ -76,7 +82,8 @@ public class GeoSegment  {
 	 *         && gs.p1 = this.p2 && gs.p2 = this.p1
 	 **/
 	public GeoSegment reverse() {
-		// TODO Implement this method
+		GeoSegment sg = new GeoSegment(this.name, this.p2, this.p1);
+		return sg;
 	}
 
 
@@ -85,7 +92,7 @@ public class GeoSegment  {
 	 * @return the name of this GeoSegment.
 	 */
 	public String getName() {
-		// TODO Implement this method
+		return this.name;
 	}
 
 
@@ -94,7 +101,7 @@ public class GeoSegment  {
 	 * @return first endpoint of the segment.
 	 */
 	public homework1.GeoPoint getP1() {
-		// TODO Implement this method
+		return this.p1;
 	}
 
 
@@ -103,7 +110,7 @@ public class GeoSegment  {
 	 * @return second endpoint of the segment.
 	 */
 	public homework1.GeoPoint getP2() {
-		// TODO Implement this method
+		return this.p2;
 	}
 
 
@@ -113,8 +120,7 @@ public class GeoSegment  {
 	 *         Technion approximation.
 	 */
 	public double getLength() {
-		Geo
-		// TODO Implement this method
+		return p1.distanceTo(p2);
 	}
 
 
@@ -125,7 +131,7 @@ public class GeoSegment  {
 	 *         flat-surface, near the Technion approximation.
 	 **/
 	public double getHeading() {
-		// TODO Implement this method
+		return p1.headingTo(p2);
 	}
 
 
@@ -135,7 +141,12 @@ public class GeoSegment  {
 	 *         && gs.name = this.name && gs.p1 = this.p1 && gs.p2 = this.p2
 	 **/
 	public boolean equals(Object gs) {
-		// TODO Implement this method
+		if (gs != null && (gs instanceof GeoSegment)) {
+			GeoSegment gsObj = (GeoSegment) gs;
+			if ((gsObj.name).equals(this.name) && (gsObj.p1).equals(this.p1) && gsObj.p2.equals(this.p2))
+				return true;
+		}
+		return false;
 	}
 
 
@@ -156,8 +167,8 @@ public class GeoSegment  {
 	 * @return a string representation of this.
 	 **/
 	public String toString() {
-		// TODO Implement this method
+		String s = String.format("Geograpic segment: '%s' with length- %s and heading- %f from point Lat: %d Long: %d", this.name, this.length, this.heading, this.heading, this.p1.getLatitude(), this.p1.getLongitude());
+		return s;
 	}
-
 }
 
