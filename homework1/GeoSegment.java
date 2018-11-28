@@ -45,8 +45,6 @@ public class GeoSegment  {
 	private String name;
 	private homework1.GeoPoint p1;
 	private homework1.GeoPoint p2;
-	private double length;
-	private double heading;
 
 	// TODO Write abstraction function and representation invariant
 
@@ -167,7 +165,7 @@ public class GeoSegment  {
 	 * @return a string representation of this.
 	 **/
 	public String toString() {
-		String s = String.format("Geograpic segment: '%s' with length- %s and heading- %f from point Lat: %d Long: %d", this.name, this.length, this.heading, this.heading, this.p1.getLatitude(), this.p1.getLongitude());
+		String s = String.format("Geographic segment: '%s' with length- %s and heading- %f from point Lat: %d Long: %d", this.name, this.getLength(), this.getHeading(), this.p1.getLatitude(), this.p1.getLongitude());
 		return s;
 	}
 }
