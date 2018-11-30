@@ -174,7 +174,13 @@ public class GeoPoint {
      * 		   gp.latitude = this.latitude && gp.longitude = this.longitude
      **/
   	public boolean equals(Object gp) {
-  		// TODO Implement this method
+		if(gp !=null && gp instanceof GeoPoint) {
+			GeoPoint castedGP = (GeoPoint) gp;
+			if (castedGP.getLatitude() == this.latitude &&
+					castedGP.getLongitude() == this.longitude)
+				return true;
+		}
+		return false;
   	}
 
 
@@ -183,19 +189,18 @@ public class GeoPoint {
      * @return a hash code value for this GeoPoint.
    	 **/
   	public int hashCode() {
-    	// This implementation will work, but you may want to modify it
-    	// for improved performance.
-
-    	return 1;
+  		//We will use the Cantor pairing function.
+		//https://en.wikipedia.org/wiki/Cantor_pairing_function#Cantor_pairing_function
+		int x = longitude;
+		int y = latitude;
+    	return (((x+y)*(x+y+1)/2)+y);
   	}
-
 
   	/**
      * Returns a string representation of this GeoPoint.
      * @return a string representation of this GeoPoint.
      **/
   	public String toString() {
-  		// TODO Implement this method
+		return "("+longitude+","+latitude+")";
   	}
-
 }
