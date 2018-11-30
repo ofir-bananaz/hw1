@@ -163,7 +163,7 @@ public class GeoPoint {
 		int diffLat = latitude1 - latitude2;
         int diffLong = longitude1 - longitude2;
 
-        double h = (-Math.toDegrees(Math.atan2(diffLat,diffLong)) + 270) % 360;
+        double h = Math.abs((-Math.toDegrees(Math.atan2(diffLat,diffLong)) + 270) % 360);
 
         return h;
     }
