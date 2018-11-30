@@ -1,6 +1,8 @@
 package homework1;
 
 
+import java.util.Iterator;
+
 /**
  * A RouteFormatter class knows how to create a textual description of
  * directions from one location to another. The class is abstract to
@@ -8,6 +10,7 @@ package homework1;
  */
 public abstract class RouteFormatter {
 
+	// TODO Abstraction Function and rep.invariant
   	/**
      * Give directions for following this Route, starting at its start point
      * and facing in the specified heading.
@@ -19,13 +22,19 @@ public abstract class RouteFormatter {
      * 	       human-readable directions from start to end along this route.
      **/
   	public String computeDirections(Route route, double heading) {
+
   		// Implementation hint:
 		// This method should call computeLine() for each geographic
 		// feature in this route and concatenate the results into a single
 		// String.
-  		
-  		// TODO Implement this method
-		return "ok";
+
+        Iterator<GeoFeature> iterator = route.getGeoFeatures();
+        String newDirection="";
+        while (iterator.hasNext()) {
+            GeoFeature gf = iterator.next();
+            newDirection += computeLine(gf, gf.getStartHeading());
+        }
+        return newDirection;
   	}
 
 
@@ -62,8 +71,31 @@ public abstract class RouteFormatter {
      * and likewise for left turns.
      */
   	protected String getTurnString(double origHeading, double newHeading) {
-  		// TODO Implement this method
-		return "ok";
+  		double angle = newHeading -origHeading;
+  	    if(angle>=0){
+            if(angle<10)
+                return "Continue";
+            else if(angle<60)
+                return "Turn slight left";
+            else if(angle<120)
+                return "Turn left";
+            else if(angle<179)
+                return "Turn sharp left";
+            else
+                return "U-turn";
+        }
+        else {
+            if(angle>=-10)
+                return "Continue";
+            else if(angle>-60)
+                return "Turn slight right";
+            else if(angle>-120)
+                return "Turn right";
+            else if(angle>-179)
+                return "Turn sharp right";
+            else
+                return "U-turn";
+        }
   	}
 
 }
