@@ -72,18 +72,20 @@ public class GeoFeature {
 		this.endHeading = gs.getHeading();
 		this.start = gs.getP1();
 		this.end = gs.getP2();
+		this.length = gs.getLength();
 		this.sequence = new ArrayList<>();
 		this.sequence.add(gs);
   	}
 
-	private GeoFeature(GeoSegment gsLast, ArrayList<GeoSegment> dupList ) {
+	private GeoFeature(GeoSegment gsLast, ArrayList<GeoSegment> dupList, double currLength) {
 		GeoSegment gsFirst = dupList.get(0);
 		this.name = gsFirst.getName();
 		this.startHeading = gsFirst.getHeading();
 		this.endHeading = gsLast.getHeading();
 		this.start = gsFirst.getP1();
 		this.end = gsLast.getP2();
-		this.sequence = dupList;
+		this.length = currLength + gsLast.getLength();
+		this.sequence = new ArrayList<>(dupList);
 		this.sequence.add(gsLast);
 	}
 
@@ -157,7 +159,7 @@ public class GeoFeature {
      *    	   r.length = this.length + gs.length
      **/
   	public GeoFeature addSegment(GeoSegment gs) {
-		GeoFeature newGf = new GeoFeature(gs,this.sequence);
+		GeoFeature newGf = new GeoFeature(gs,this.sequence, this.length);
 		return newGf;
   	}
 
@@ -193,7 +195,7 @@ public class GeoFeature {
      **/
   	public boolean equals(Object o) {
 		if (o != null && (o instanceof GeoFeature)) {
-			GeoFeature gfObj = (GeoFeature) o;
+			GeoFeature gfObj = GeoFeature.class.cast(o);
 			Iterator<GeoSegment> itr1 = this.getGeoSegments();
 			Iterator<GeoSegment> itr2 = gfObj.getGeoSegments();
 			while(itr1.hasNext() && itr2.hasNext()) {

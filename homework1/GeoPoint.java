@@ -201,6 +201,6 @@ public class GeoPoint {
      * @return a string representation of this GeoPoint.
      **/
   	public String toString() {
-		return "("+longitude+","+latitude+")";
+		return "("+latitude+","+longitude+")";
   	}
 }
