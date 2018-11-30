@@ -77,16 +77,16 @@ public class GeoFeature {
 		this.sequence.add(gs);
   	}
 
-	private GeoFeature(GeoSegment gsLast, ArrayList<GeoSegment> dupList, double currLength) {
+	private GeoFeature(GeoSegment gsNew, ArrayList<GeoSegment> dupList, double oldLength) {
 		GeoSegment gsFirst = dupList.get(0);
 		this.name = gsFirst.getName();
 		this.startHeading = gsFirst.getHeading();
-		this.endHeading = gsLast.getHeading();
+		this.endHeading = gsNew.getHeading();
 		this.start = gsFirst.getP1();
-		this.end = gsLast.getP2();
-		this.length = currLength + gsLast.getLength();
+		this.end = gsNew.getP2();
+		this.length = oldLength + gsNew.getLength();
 		this.sequence = new ArrayList<>(dupList);
-		this.sequence.add(gsLast);
+		this.sequence.add(gsNew);
 	}
 
 
@@ -230,7 +230,7 @@ public class GeoFeature {
    	 * @return a string representation of this.
      **/
   	public String toString() {
-		String s = String.format("Geographic Feature: '%s' with Total length of - %s. Start point-'%s' End Point-'%s'", this.getName(), this.getLength(), this.getStart().toString(), this.getEnd().toString());
+		String s = String.format("Geographic Feature: '%s' with Total length of - %s. Start point-'%s' End Point-'%s', , Start Heading-'%f', End Heading-'%f'", this.name, this.length, this.start.toString(), this.end.toString(),this.startHeading, this.endHeading);
 		return s;
   	}
 }

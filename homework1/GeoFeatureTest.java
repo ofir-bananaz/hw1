@@ -112,7 +112,7 @@ class GeoFeatureTest {
 
 
         gf3add2diff = gfadd1.addSegment(gsEast2);
-        show("Are differene:", !gfadd2.equals(gf3add2diff));
+        show("Are different:", !gfadd2.equals(gf3add2diff));
     }
 
     public static void main(String[] args) {

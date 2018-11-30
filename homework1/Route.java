@@ -1,5 +1,6 @@
 package homework1;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -33,9 +34,17 @@ import java.util.Iterator;
  **/
 public class Route {
 
-	
- 	// TODO Write abstraction function and representation invariant
+    private GeoPoint start;       // location of the start of the geographic feature
+    private GeoPoint end;         // location of the end of the geographic feature
+    private double startHeading;  // direction of travel at the start of the geographic feature, in degrees
+    private double endHeading;    // direction of travel at the end of the geographic feature, in degrees
+    private ArrayList<GeoSegment> geoSegmentsSequence;      // a sequence of segments that make up this geographic feature
+    private ArrayList<GeoFeature> geoFeatureSequence;      // a sequence of segments that make up this geographic feature
+    private double length;          // total length of the geographic feature, in kilometers
+    private GeoSegment endingGeoSegment;
 
+
+    // TODO Write abstraction function and representation invariant
 
   	/**
   	 * Constructs a new Route.
@@ -47,17 +56,54 @@ public class Route {
      *          r.end = gs.p2
      **/
   	public Route(GeoSegment gs) {
-  		// TODO Implement this constructor
-  	}
+        this.endingGeoSegment = gs;
+        this.startHeading = gs.getHeading();
+        this.endHeading = gs.getHeading();
+        this.start = gs.getP1();
+        this.end = gs.getP2();
+        this.geoSegmentsSequence = new ArrayList<>();
+        this.geoFeatureSequence = new ArrayList<>();
+        this.geoSegmentsSequence.add(gs);
+        this.length = gs.getLength();
+        GeoFeature gf = new GeoFeature(gs);
+        this.geoFeatureSequence.add(gf);
+    }
 
+    private Route(GeoSegment gsNew, GeoSegment gsLastOld, ArrayList<GeoSegment> geoSegmentsSequenceDup, ArrayList<GeoFeature> geoFeatureSequenceDup, double oldLength) {
+        GeoSegment gsFirst = geoSegmentsSequenceDup.get(0);
+        this.endingGeoSegment = gsNew;
+  	    this.startHeading = gsFirst.getHeading();
+        this.endHeading = gsNew.getHeading();
+        this.start = gsFirst.getP1();
+        this.end = gsNew.getP2();
+        this.length = oldLength + gsNew.getLength();
+
+        this.geoSegmentsSequence = new ArrayList<>(geoSegmentsSequenceDup);
+        this.geoSegmentsSequence.add(gsNew);
+
+        // Is new feature needed?
+        String gsNewName =  gsNew.getName();
+        String endGeoFeatureName = gsLastOld.getName();
+        this.geoFeatureSequence = new ArrayList<>(geoFeatureSequenceDup);
+        GeoFeature gfNew = null;
+
+        if (endGeoFeatureName.equals(gsNewName)){
+            int lastIndexGf = this.geoFeatureSequence.size() -1;
+            gfNew = geoFeatureSequenceDup.get(lastIndexGf).addSegment(gsNew);
+            this.geoFeatureSequence.remove(lastIndexGf);
+        }
+        else { //not the same GeoSegment name - new GF to list
+            gfNew = new GeoFeature(gsNew);
+        }
+        this.geoFeatureSequence.add(gfNew);
+    }
 
     /**
      * Returns location of the start of the route.
      * @return location of the start of the route.
      **/
   	public GeoPoint getStart() {
-  		// TODO Implement this method
-		return null;
+        return this.start;
   	}
 
 
@@ -66,8 +112,7 @@ public class Route {
      * @return location of the end of the route.
      **/
   	public GeoPoint getEnd() {
-  		// TODO Implement this method
-		return null;
+        return this.end;
   	}
 
 
@@ -77,8 +122,7 @@ public class Route {
    	 *         route, in degrees.
    	 **/
   	public double getStartHeading() {
-  		// TODO Implement this method
-		return 0.0;
+        return this.startHeading;
   	}
 
 
@@ -88,8 +132,7 @@ public class Route {
      *         route, in degrees.
      **/
   	public double getEndHeading() {
-  		// TODO Implement this method
-		return 0.0;
+        return this.endHeading;
   	}
 
 
@@ -100,8 +143,7 @@ public class Route {
      *         traverse the route. These values are not necessarily equal.
    	 **/
   	public double getLength() {
-  		// TODO Implement this method
-		return 0.0;
+        return this.length;
   	}
 
 
@@ -115,8 +157,7 @@ public class Route {
      *         r.length = this.length + gs.length
      **/
   	public Route addSegment(GeoSegment gs) {
-  		// TODO Implement this method
-		return null;
+        return new Route(gs, endingGeoSegment, this.geoSegmentsSequence, this.geoFeatureSequence,this.length);
   	}
 
 
@@ -139,8 +180,7 @@ public class Route {
      * @see homework1.GeoFeature
      **/
   	public Iterator<GeoFeature> getGeoFeatures() {
-  		// TODO Implement this method
-		return null;
+        return geoFeatureSequence.iterator();
   	}
 
 
@@ -159,8 +199,7 @@ public class Route {
      * @see homework1.GeoSegment
      **/
   	public Iterator<GeoSegment> getGeoSegments() {
-  		// TODO Implement this method
-		return null;
+  		return geoSegmentsSequence.iterator();
   	}
 
 
@@ -171,8 +210,22 @@ public class Route {
      *          the same elements in the same order).
      **/
   	public boolean equals(Object o) {
-  		// TODO Implement this method
-		return true;
+        if (o != null && (o instanceof Route)) {
+            Route RouteObj = Route.class.cast(o);
+            Iterator<GeoFeature> itr1 = this.getGeoFeatures();
+            Iterator<GeoFeature> itr2 = RouteObj.getGeoFeatures();
+            while(itr1.hasNext() && itr2.hasNext()) {
+                GeoFeature curr1 = itr1.next();
+                GeoFeature curr2 = itr2.next();
+                if (!curr1.equals(curr2)) {
+                    return false;
+                }
+            }
+            if (!itr1.hasNext()  && !itr2.hasNext()){ // both are false -> both has no more elements
+                return true;
+            }
+        }
+        return false;
   	}
 
 
@@ -193,7 +246,7 @@ public class Route {
      * @return a string representation of this.
      **/
   	public String toString() {
-  		return "";
+  		return String.format("Route: Total length-'%s'. Start point-'%s' End Point-'%s', Start Heading-'%f', End Heading-'%f'", this.length, this.start.toString(), this.end.toString(), this.startHeading, this.endHeading);
   	}
 
 }
