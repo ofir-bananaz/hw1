@@ -33,6 +33,9 @@ public class GeoSegmentTest {
   	
   	
   	boolean same(double x, double y) {
+
+		// System.out.printf("x: %f ", x);
+		// System.out.printf("y: %f\n", y);
   		return ((y >= x-tolerance) && (y <= x+tolerance));
   	}
   	

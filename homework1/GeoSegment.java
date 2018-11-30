@@ -156,7 +156,7 @@ public class GeoSegment  {
 		// This implementation will work, but you may want to modify it
 		// for improved performance.
 
-		return w`1;
+		return 1;
 	}
 
 

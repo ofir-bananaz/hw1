@@ -124,8 +124,8 @@ public class GeoPoint {
         int latitude2 = gp.getLatitude();
 
         //Latitude and Longitude differences
-        int y = Math.abs(latitude1 - latitude2)*(int)KM_PER_DEGREE_LATITUDE;
-        int x = Math.abs(longitude1 - longitude2)*(int)KM_PER_DEGREE_LONGITUDE;
+		double y = Math.abs(latitude1 - latitude2)*KM_PER_DEGREE_LATITUDE;
+        double x = Math.abs(longitude1 - longitude2)*KM_PER_DEGREE_LONGITUDE;
 
         //Distance final calculation (including division by million).
         double Distance =Math.sqrt(Math.pow(x,2)+Math.pow(y,2))/MILLION;
@@ -160,10 +160,10 @@ public class GeoPoint {
         int longitude2 = gp.getLongitude();
         int latitude2 = gp.getLatitude();
 
+		int diffLat = latitude1 - latitude2;
         int diffLong = longitude1 - longitude2;
-        int diffLat = latitude1 - latitude2;
 
-        double h = Math.toDegrees(Math.atan2(diffLat,diffLong));
+        double h = (-Math.toDegrees(Math.atan2(diffLat,diffLong)) + 270) % 360;
 
         return h;
     }

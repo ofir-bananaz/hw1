@@ -57,6 +57,7 @@ public class Route {
      **/
   	public GeoPoint getStart() {
   		// TODO Implement this method
+		return null;
   	}
 
 
@@ -66,6 +67,7 @@ public class Route {
      **/
   	public GeoPoint getEnd() {
   		// TODO Implement this method
+		return null;
   	}
 
 
@@ -76,6 +78,7 @@ public class Route {
    	 **/
   	public double getStartHeading() {
   		// TODO Implement this method
+		return 0.0;
   	}
 
 
@@ -86,6 +89,7 @@ public class Route {
      **/
   	public double getEndHeading() {
   		// TODO Implement this method
+		return 0.0;
   	}
 
 
@@ -97,6 +101,7 @@ public class Route {
    	 **/
   	public double getLength() {
   		// TODO Implement this method
+		return 0.0;
   	}
 
 
@@ -111,6 +116,7 @@ public class Route {
      **/
   	public Route addSegment(GeoSegment gs) {
   		// TODO Implement this method
+		return null;
   	}
 
 
@@ -134,6 +140,7 @@ public class Route {
      **/
   	public Iterator<GeoFeature> getGeoFeatures() {
   		// TODO Implement this method
+		return null;
   	}
 
 
@@ -153,6 +160,7 @@ public class Route {
      **/
   	public Iterator<GeoSegment> getGeoSegments() {
   		// TODO Implement this method
+		return null;
   	}
 
 
@@ -164,6 +172,7 @@ public class Route {
      **/
   	public boolean equals(Object o) {
   		// TODO Implement this method
+		return true;
   	}
 
 
@@ -184,6 +193,7 @@ public class Route {
      * @return a string representation of this.
      **/
   	public String toString() {
+  		return "";
   	}
 
 }
