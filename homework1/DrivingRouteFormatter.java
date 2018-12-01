@@ -1,7 +1,10 @@
 package homework1;
 
 import java.text.DecimalFormat;
+import java.util.Iterator;
 
+
+//TODO Abstract function and representation Invariant.
 /**
  * The DrivingDirections class creates a textual description of directions
  * for traversing a route that are suitable for a driver of a vehicle.
@@ -10,7 +13,7 @@ import java.text.DecimalFormat;
  * following form:
  * <p>
  * <tt>
- * Turn slight right onto Hankin Road and go 0.1 kilometers.<br>
+ * Turn slight right onto Hankin Road and goXW 0.1 kilometers.<br>
  * Turn slight right onto Trumpeldor Avenue and go 0.7 kilometers.<br>
  * Turn left onto Hagalil and go 1.4 kilometers.<br>
  * Turn sharp left onto Hanita and go 1.4 kilometers.<br>
@@ -57,9 +60,24 @@ public class DrivingRouteFormatter extends RouteFormatter {
   	    // http://docs.oracle.com/javase/tutorial/java/data/numberformat.html
   		// and at:
   		// http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
-		   		
-  		// TODO Implement this method
-		return "ok";
+		double currentHeading=origHeading;
+		Iterator<GeoSegment> segIterator = geoFeature.getGeoSegments();
+		String directions="";
+		String newHeading="";
+
+		while(segIterator.hasNext()){
+
+			GeoSegment gs= segIterator.next();
+			newHeading = getTurnString(currentHeading,gs.getHeading());
+			currentHeading=gs.getHeading();
+			double length = gs.getLength();
+			DecimalFormat df = new DecimalFormat("#.#");
+			length=Double.valueOf(df.format(length));
+			String streetName = gs.getName();
+			directions += newHeading + " onto " + streetName + " and go " +length+
+					" kilometers."+"\n";
+		}
+		return directions;
   	}
 
 }

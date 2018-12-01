@@ -1,6 +1,7 @@
 package homework1;
 
 import java.text.DecimalFormat;
+import java.util.Iterator;
 
 /**
  * A WalkingDirections class knows how to create a textual description of
@@ -59,8 +60,21 @@ public class WalkingRouteFormatter extends RouteFormatter {
 		// http://docs.oracle.com/javase/tutorial/java/data/numberformat.html
 		// and at:
 		// http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
-					 
-  		// TODO Implement this method
-		return "";
+		double currentHeading=origHeading;
+		Iterator<GeoSegment> segIterator = geoFeature.getGeoSegments();
+		String directions="";
+		String newHeading;
+		while(segIterator.hasNext()){
+			GeoSegment gs= segIterator.next();
+			newHeading = getTurnString(currentHeading,gs.getHeading());
+			currentHeading=gs.getHeading();
+			double length = gs.getLength();
+			int minutes = (int) Math.round(length*20);
+			String streetName = gs.getName();
+			directions += newHeading + " onto " + streetName + " and walk for " +minutes+
+					" minutes."+"\n";
+
+		}
+		return directions;
   	}
 }

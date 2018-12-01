@@ -29,10 +29,12 @@ public abstract class RouteFormatter {
 		// String.
 
         Iterator<GeoFeature> iterator = route.getGeoFeatures();
+        double currentHeading = heading;
         String newDirection="";
         while (iterator.hasNext()) {
             GeoFeature gf = iterator.next();
-            newDirection += computeLine(gf, gf.getStartHeading());
+            newDirection += computeLine(gf, currentHeading);
+            currentHeading=gf.getStartHeading();
         }
         return newDirection;
   	}
@@ -71,31 +73,27 @@ public abstract class RouteFormatter {
      * and likewise for left turns.
      */
   	protected String getTurnString(double origHeading, double newHeading) {
-  		double angle = newHeading -origHeading;
-  	    if(angle>=0){
+  	    String direction="";
+  	    if(newHeading<=180)
+  	        direction="right";
+  	    else
+  	        direction="left";
+
+  		double angle = Math.min((origHeading-newHeading)<0?origHeading-newHeading
+                +360:origHeading-newHeading, (newHeading-origHeading)<0?newHeading-origHeading
+                +360:newHeading-origHeading);
+                //(newHeading -origHeading)%360;
             if(angle<10)
                 return "Continue";
             else if(angle<60)
-                return "Turn slight left";
+                    return "Turn slight "+direction;
             else if(angle<120)
-                return "Turn left";
+                return "Turn " +direction;
             else if(angle<179)
-                return "Turn sharp left";
+                return "Turn sharp "+direction;
             else
                 return "U-turn";
         }
-        else {
-            if(angle>=-10)
-                return "Continue";
-            else if(angle>-60)
-                return "Turn slight right";
-            else if(angle>-120)
-                return "Turn right";
-            else if(angle>-179)
-                return "Turn sharp right";
-            else
-                return "U-turn";
-        }
+
   	}
 
-}
