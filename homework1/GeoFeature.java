@@ -7,7 +7,7 @@ import java.util.Iterator;
  * A GeoFeature represents a route from one location to another along a
  * single geographic feature. GeoFeatures are immutable.
  * <p>
- * GeoFeature abstracts over a sequence of GeoSegments, all of which have
+ * GeoFeature abstracts over a geoSegmentArrayList of GeoSegments, all of which have
  * the same name, thus providing a representation for nonlinear or nonatomic
  * geographic features. As an example, a GeoFeature might represent the
  * course of a winding river, or travel along a road through intersections
@@ -31,7 +31,7 @@ import java.util.Iterator;
  *   end : GeoPoint         // location of the end of the geographic feature
  *   startHeading : angle   // direction of travel at the start of the geographic feature, in degrees
  *   endHeading : angle     // direction of travel at the end of the geographic feature, in degrees
- *   geoSegments : sequence	// a sequence of segments that make up this geographic feature
+ *   geoSegments : geoSegmentArrayList	// a geoSegmentArrayList of segments that make up this geographic feature
  *   name : String          // name of geographic feature
  *   length : real          // total length of the geographic feature, in kilometers
  * </pre>
@@ -46,17 +46,32 @@ public class GeoFeature {
 	// info can be found at:
 	//   http://docs.oracle.com/javase/8/docs/api/java/util/List.html
 
-	private GeoPoint start;       // location of the start of the geographic feature
-    private GeoPoint end;         // location of the end of the geographic feature
- 	private double startHeading;  // direction of travel at the start of the geographic feature, in degrees
-    private double endHeading;    // direction of travel at the end of the geographic feature, in degrees
-    private ArrayList<GeoSegment>  sequence;      // a sequence of segments that make up this geographic feature
-    String name;          // name of geographic feature
-    private double length;          // total length of the geographic feature, in kilometers
-  	// TODO Write abstraction function and representation invariant
+	private GeoPoint start;                              // location of the start of the geographic feature
+    private GeoPoint end;                                // location of the end of the geographic feature
+ 	private double startHeading;                         // direction of travel at the start of the geographic feature, in degrees
+    private double endHeading;                           // direction of travel at the end of the geographic feature, in degrees
+    private ArrayList<GeoSegment> geoSegmentArrayList;   // a geoSegmentArrayList of segments that make up this geographic feature
+    String name;                                         // name of geographic feature
+    private double length;                               // total length of the geographic feature, in kilometers
 
 
-	/**
+    // Abstraction function:
+    // represents GeoFeature gf:
+    // gf.length is the total length of the geographic feature, in kilometers
+    // gf.heading is the irection of travel at the start of the geographic feature, in degrees
+    // gf.heading is the irection of travel at the start of the geographic feature, in degrees
+    // gs.name e is given to all GeoSegment objects so that it is possible to
+    // gf.start is the location of the start of the geographic feature
+    // gf.end is the location of the end of the geographic feature
+    // GeoPoint endpoints.
+
+    // Representation invariant:
+    // (name != null), (start != null), (end != null), (start != end), (startHeading != null), (endHeading != null)
+
+
+
+
+    /**
      * Constructs a new GeoFeature.
      * @requires gs != null
      * @effects Constructs a new GeoFeature, r, such that
@@ -73,10 +88,20 @@ public class GeoFeature {
 		this.start = gs.getP1();
 		this.end = gs.getP2();
 		this.length = gs.getLength();
-		this.sequence = new ArrayList<>();
-		this.sequence.add(gs);
+		this.geoSegmentArrayList= new ArrayList<>();
+		this.geoSegmentArrayList.add(gs);
   	}
 
+	/**
+	 * Constructs a new GeoFeature using old
+	 * @requires gs != null
+	 * @effects Constructs a new GeoFeature, r, such that
+	 *	        r.name = gs.name &&
+	 *          r.startHeading = gs.heading &&
+	 *          r.endHeading = gs.heading &&
+	 *          r.start = gs.p1 &&
+	 *          r.end = gs.p2
+	 **/
 	private GeoFeature(GeoSegment gsNew, ArrayList<GeoSegment> dupList, double oldLength) {
 		GeoSegment gsFirst = dupList.get(0);
 		this.name = gsFirst.getName();
@@ -85,10 +110,18 @@ public class GeoFeature {
 		this.start = gsFirst.getP1();
 		this.end = gsNew.getP2();
 		this.length = oldLength + gsNew.getLength();
-		this.sequence = new ArrayList<>(dupList);
-		this.sequence.add(gsNew);
+		this.geoSegmentArrayList = new ArrayList<>(dupList);
+		this.geoSegmentArrayList.add(gsNew);
 	}
 
+
+	/**
+	 * Returns name of geographic feature.
+	 * @return name of geographic feature
+	 */
+	private ArrayList<GeoSegment> getGeoSegment() {
+		return this.geoSegmentArrayList;
+	}
 
  	/**
  	  * Returns name of geographic feature.
@@ -159,7 +192,7 @@ public class GeoFeature {
      *    	   r.length = this.length + gs.length
      **/
   	public GeoFeature addSegment(GeoSegment gs) {
-		GeoFeature newGf = new GeoFeature(gs,this.sequence, this.length);
+		GeoFeature newGf = new GeoFeature(gs,this.geoSegmentArrayList, this.length);
 		return newGf;
   	}
 
@@ -183,7 +216,7 @@ public class GeoFeature {
      * @see homework1.GeoSegment
      */
   	public Iterator<GeoSegment> getGeoSegments() {
-  		return sequence.iterator();
+  		return geoSegmentArrayList.iterator();
   	}
 
 

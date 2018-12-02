@@ -69,33 +69,62 @@ public class Route {
         this.geoFeatureSequence.add(gf);
     }
 
-    private Route(GeoSegment gsNew, GeoSegment gsLastOld, ArrayList<GeoSegment> geoSegmentsSequenceDup, ArrayList<GeoFeature> geoFeatureSequenceDup, double oldLength) {
-        GeoSegment gsFirst = geoSegmentsSequenceDup.get(0);
+    /**
+     * Constructs a new Route with a new GeoSegment ("gsNew") by adding it as a last element to a provided Route.
+     * @requires oldRoute != null, gsNew != null
+     * @effects Constructs a new Route, r, such that
+     *	        r.startHeading = gs.heading &&
+     *          r.endHeading = gs.heading &&
+     *          r.start = gs.p1 &&
+     *          r.end = gs.p2
+     **/
+    private Route(Route oldRoute, GeoSegment gsNew) {
+        GeoSegment gsFirst = oldRoute.getGeoSegmentSequence().get(0);
+        double oldLength = oldRoute.getLength();
         this.endingGeoSegment = gsNew;
   	    this.startHeading = gsFirst.getHeading();
         this.endHeading = gsNew.getHeading();
         this.start = gsFirst.getP1();
         this.end = gsNew.getP2();
         this.length = oldLength + gsNew.getLength();
-
-        this.geoSegmentsSequence = new ArrayList<>(geoSegmentsSequenceDup);
+        this.endingGeoSegment = gsNew;
+        this.geoSegmentsSequence = new ArrayList<>(oldRoute.getGeoSegmentSequence());
         this.geoSegmentsSequence.add(gsNew);
 
-        // Is new feature needed?
-        String gsNewName =  gsNew.getName();
-        String endGeoFeatureName = gsLastOld.getName();
-        this.geoFeatureSequence = new ArrayList<>(geoFeatureSequenceDup);
-        GeoFeature gfNew = null;
+        // Check if a new feature needed
+        this.geoFeatureSequence = new ArrayList<>(oldRoute.getGeoFeatureSequence());
 
-        if (endGeoFeatureName.equals(gsNewName)){
-            int lastIndexGf = this.geoFeatureSequence.size() -1;
-            gfNew = geoFeatureSequenceDup.get(lastIndexGf).addSegment(gsNew);
+        //fetch old GeoSegment Name
+        int lastIndexGf = this.geoFeatureSequence.size() -1;
+        GeoFeature gfOld = oldRoute.getGeoFeatureSequence().get(lastIndexGf);
+        String endGeoFeatureName = gfOld.getName();
+
+        GeoFeature gfNew;
+        if (endGeoFeatureName.equals(gsNew.getName())){
+            gfNew = (oldRoute.getGeoFeatureSequence().get(lastIndexGf)).addSegment(gsNew); // adding gsNew to the last feature list.
             this.geoFeatureSequence.remove(lastIndexGf);
         }
         else { //not the same GeoSegment name - new GF to list
             gfNew = new GeoFeature(gsNew);
         }
         this.geoFeatureSequence.add(gfNew);
+
+    }
+
+    /**
+     * Returns the arrayList of the GeoSegmentSequence.
+     * @return arrayList of the GeoSegmentSequence.
+     **/
+    private ArrayList<GeoSegment> getGeoSegmentSequence() {
+        return this.geoSegmentsSequence;
+    }
+
+    /**
+     * Returns the arrayList of the geoFeatureSequence.
+     * @return the arrayList of the geoFeatureSequence.
+     **/
+    private ArrayList<GeoFeature> getGeoFeatureSequence() {
+        return this.geoFeatureSequence;
     }
 
     /**
@@ -157,7 +186,7 @@ public class Route {
      *         r.length = this.length + gs.length
      **/
   	public Route addSegment(GeoSegment gs) {
-        return new Route(gs, endingGeoSegment, this.geoSegmentsSequence, this.geoFeatureSequence,this.length);
+        return new Route(this, gs);
   	}
 
 

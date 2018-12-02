@@ -46,8 +46,6 @@ public class GeoSegment  {
 	private homework1.GeoPoint p1;
 	private homework1.GeoPoint p2;
 
-	// TODO Write abstraction function and representation invariant
-
 	// Abstraction function:
 	// represents GeoSegment gs:
 	// gs.length is a straight-line distance between p1 and p2, in kilometers
@@ -58,8 +56,7 @@ public class GeoSegment  {
 
 	// Representation invariant:
 	// (name != null), (p1 != null), (p2 != null), (p1 != p2)
-	//
-	// length is the distance between
+
 
 
 	/**
