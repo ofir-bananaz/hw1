@@ -27,7 +27,15 @@ import java.util.Iterator;
  **/
 public class WalkingRouteFormatter extends RouteFormatter {
 
-  	/**
+	// Abstraction Function:
+	// Create a textual description of walking directions,
+	// using the initial heading and the walking route.
+
+	// Representation invariant for every RouteFormatter (and extensions):
+	// (0<=heading<360) && (route!=null)
+
+
+	/**
      * Computes a single line of a multi-line directions String that
      * represents the instructions for walking along a single geographic
      * feature.
@@ -73,7 +81,6 @@ public class WalkingRouteFormatter extends RouteFormatter {
 			String streetName = gs.getName();
 			directions += newHeading + " onto " + streetName + " and walk for " +minutes+
 					" minutes."+"\n";
-
 		}
 		return directions;
   	}

@@ -27,8 +27,15 @@ import java.util.Iterator;
  * should include no extra spaces other than those shown above.
  */
 public class DrivingRouteFormatter extends RouteFormatter {
-  
-  	/**
+
+	// Abstraction Function:
+	// Create a textual description of driving directions,
+	// using the initial heading and the driving route.
+
+	// Representation invariant for every RouteFormatter (and extensions):
+	// (0<=heading<360) && (route!=null)
+
+	/**
      * Computes a single line of a multi-line directions String that
      * represents the instructions for traversing a single geographic
      * feature.

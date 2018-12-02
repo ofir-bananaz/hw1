@@ -10,7 +10,12 @@ import java.util.Iterator;
  */
 public abstract class RouteFormatter {
 
-	// TODO Abstraction Function and rep.invariant
+    // Abstraction Function:
+    // Create a textual description of directions, using the initial heading and the route.
+
+    // Representation invariant for every RouteFormatter (and extensions):
+    // (0<=heading<360) && (route!=null)
+
   	/**
      * Give directions for following this Route, starting at its start point
      * and facing in the specified heading.
