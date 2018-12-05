@@ -148,6 +148,7 @@ public class RouteFormatterGUI extends JPanel {
 	public void addSegment(GeoSegment segment) {
 		Route newRoute = new Route(segment);
 		route=newRoute;
+		GeoSegment[] segments = ExampleGeoSegments.segments;
 		DefaultListModel<GeoSegment> model = (DefaultListModel<GeoSegment>) this.lstSegments.getModel();
 		model.addElement(segment);
 		this.lstSegments.setModel(model);

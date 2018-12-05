@@ -24,12 +24,15 @@ public class GeoSegmentsDialog extends JDialog {
 	//a scroll pane
 	private JScrollPane segPane;
 
+	private int highestIndexSelected=-1;
+
 
 	/**
 	 * Creates a new GeoSegmentsDialog JDialog.
 	 * @effects Creates a new GeoSegmentsDialog JDialog with owner-frame
 	 * 			owner and parent pnlParent
 	 */
+
 	public GeoSegmentsDialog(Frame owner, RouteFormatterGUI pnlParent) {
 			// create a modal JDialog with the an owner Frame (a modal window
 			// in one that doesn't allow other windows to be active at the
@@ -59,15 +62,34 @@ public class GeoSegmentsDialog extends JDialog {
 			segPane.setPreferredSize(new Dimension(500,200));
 			pack();
 
-			//Pressing the add button
+			//Pressing the add button.
 			btnAddSegment.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
-					pnlParent.addSegment(lstSegments.getSelectedValue());
-					model.removeElementAt(lstSegments.getSelectedIndex());
-					lstSegments.setModel(model);
+				/*Adding a new segment must cope with the term of segment order.
+				//If the segment chosen appears before the last segment in the route,
+				an error dialog box appears and alerts the user.
+				*/
+					int indexInMap=0;
+					for(int i=0;i<segments.length;i++){
+						if(segments[i].equals(lstSegments.getSelectedValue())){
+							indexInMap = i;
+							break;
+						}
+					}
+
+					if(highestIndexSelected!=-1&& indexInMap<highestIndexSelected)
+							JOptionPane.showMessageDialog(owner, "Segment order error!");
+					else {
+						indexInMap= lstSegments.getSelectedIndex();
+						pnlParent.addSegment(lstSegments.getSelectedValue());
+						highestIndexSelected=Math.max(index,highestIndexSelected);
+						model.removeElementAt(index);
+						lstSegments.setModel(model);
+
 				}
-			});
+			}});
+
 
 			//Pressing the cancel button
 			btnCancel.addActionListener(new ActionListener() {
