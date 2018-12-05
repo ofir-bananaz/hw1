@@ -83,8 +83,8 @@ public class GeoSegmentsDialog extends JDialog {
 					else {
 						indexInMap= lstSegments.getSelectedIndex();
 						pnlParent.addSegment(lstSegments.getSelectedValue());
-						highestIndexSelected=Math.max(index,highestIndexSelected);
-						model.removeElementAt(index);
+						highestIndexSelected=Math.max(indexInMap,highestIndexSelected);
+						model.removeElementAt(indexInMap);
 						lstSegments.setModel(model);
 
 				}
