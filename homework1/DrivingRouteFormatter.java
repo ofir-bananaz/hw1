@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.Iterator;
 
 
-//TODO Abstract function and representation Invariant.
 /**
  * The DrivingDirections class creates a textual description of directions
  * for traversing a route that are suitable for a driver of a vehicle.

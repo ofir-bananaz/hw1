@@ -33,13 +33,15 @@ public class RouteFormatterGUI extends JPanel {
 		// create a GeoSegmentsDialog (secondary window)
 		dlgSegments = new GeoSegmentsDialog(frame, this);
 		dlgSegments.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		dlgSegments.setPreferredSize(new Dimension(1000,400));
 		dlgSegments.pack();
 
 		// create components
 		lstSegments = new JList<>(new DefaultListModel<GeoSegment>());
 		lstSegments.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane scrlSegments = new JScrollPane(lstSegments);
-		scrlSegments.setPreferredSize(new Dimension(450, 100));
+		lstSegments.setPreferredSize(new Dimension(350, 100));
+		frame.pack();
 
 		JLabel lblSegments = new JLabel("Route's GeoSegments:");
 		lblSegments.setLabelFor(lstSegments);
@@ -47,16 +49,18 @@ public class RouteFormatterGUI extends JPanel {
 		txtWalkingDirections = new JTextArea();
 		txtWalkingDirections.setEditable(false);
 		JScrollPane scrlWalkingDirections = new JScrollPane(txtWalkingDirections);
-		scrlWalkingDirections.setPreferredSize(new Dimension(400, 70));
+		scrlWalkingDirections.setPreferredSize(new Dimension(400, 300));
 		JLabel lblWalkingDirections = new JLabel("Walking Directions:");
 		lblWalkingDirections.setLabelFor(txtWalkingDirections);
+		frame.pack();
 
 		txtDrivingDirections = new JTextArea();
 		txtDrivingDirections.setEditable(false);
 		JScrollPane scrlDrivingDirections = new JScrollPane(txtDrivingDirections);
-		scrlDrivingDirections.setPreferredSize(new Dimension(400, 70));
+		scrlDrivingDirections.setPreferredSize(new Dimension(400, 300));
 		JLabel lblDrivingDirections = new JLabel("Driving Directions:");
 		lblDrivingDirections.setLabelFor(txtDrivingDirections);
+		frame.pack();
 
 		JButton btnAddSegment = new JButton("Add GeoSegment");
 		btnAddSegment.addActionListener(new ActionListener() {
@@ -142,20 +146,28 @@ public class RouteFormatterGUI extends JPanel {
 	 * 			RouteDirection.computeDirections(this.route,0)
 	 */
 	public void addSegment(GeoSegment segment) {
-		DefaultListModel<GeoSegment> model =
-				(DefaultListModel<GeoSegment>)(this.lstSegments.getModel());
-		
-		// TODO Write the body of this method
+		Route newRoute = new Route(segment);
+		route=newRoute;
+		DefaultListModel<GeoSegment> model = (DefaultListModel<GeoSegment>) this.lstSegments.getModel();
+		model.addElement(segment);
+		this.lstSegments.setModel(model);
+		route.addSegment(segment);
+		WalkingRouteFormatter wRF = new WalkingRouteFormatter();
+		DrivingRouteFormatter dRF = new DrivingRouteFormatter();
+		txtWalkingDirections.append(wRF.computeDirections(this.route,0));
+		txtDrivingDirections.append(dRF.computeDirections(this.route,0));
 	}
 
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 		JFrame frame = new JFrame("Route Formatter GUI");
+		frame.setPreferredSize(new Dimension(1000,1000));
+		frame.pack();
 		Container contentPane = frame.getContentPane();
 		contentPane.add(new RouteFormatterGUI(frame));
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
-    }
+	}
 }
