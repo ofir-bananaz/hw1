@@ -162,7 +162,7 @@ public class GeoSegment  {
 	 * @return a string representation of this.
 	 **/
 	public String toString() {
-		String s = String.format(" ( '%s',(%d,%d),(%d,%d)", this.name, this.p1.getLatitude(), this.p1.getLongitude(),this.p2.getLatitude(), this.p2.getLongitude());
+		String s = String.format(" ( '%s',(%d,%d),(%d,%d))", this.name, this.p1.getLatitude(), this.p1.getLongitude(),this.p2.getLatitude(), this.p2.getLongitude());
 		return s;
 	}
 }
