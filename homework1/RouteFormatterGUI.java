@@ -145,18 +145,29 @@ public class RouteFormatterGUI extends JPanel {
 	 * 			with the return value of
 	 * 			RouteDirection.computeDirections(this.route,0)
 	 */
-	public void addSegment(GeoSegment segment) {
-		Route newRoute = new Route(segment);
-		route=newRoute;
-		GeoSegment[] segments = ExampleGeoSegments.segments;
+	public boolean addSegment(GeoSegment segment) {
+		if (route == null)
+		{
+			route= new Route(segment);
+            System.out.format("first new route: %s \n", segment.toString());
+
+		}
+		else if (segment.getP1() == this.route.getEnd()) {
+            route = route.addSegment(segment);
+            System.out.format("adding segment: %s \n", segment.toString());
+
+		}
+		else {
+			return false;
+		}
 		DefaultListModel<GeoSegment> model = (DefaultListModel<GeoSegment>) this.lstSegments.getModel();
 		model.addElement(segment);
 		this.lstSegments.setModel(model);
-		route.addSegment(segment);
 		WalkingRouteFormatter wRF = new WalkingRouteFormatter();
 		DrivingRouteFormatter dRF = new DrivingRouteFormatter();
-		txtWalkingDirections.append(wRF.computeDirections(this.route,0));
-		txtDrivingDirections.append(dRF.computeDirections(this.route,0));
+		txtWalkingDirections.setText(wRF.computeDirections(this.route, 0));
+		txtDrivingDirections.setText(dRF.computeDirections(this.route, 0));
+		return true;
 	}
 
 

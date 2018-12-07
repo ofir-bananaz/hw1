@@ -63,40 +63,35 @@ public class GeoSegmentsDialog extends JDialog {
 			pack();
 
 			//Pressing the add button.
-			btnAddSegment.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+            btnAddSegment.addActionListener(e -> {
 
-				/*Adding a new segment must cope with the term of segment order.
-				//If the segment chosen appears before the last segment in the route,
-				an error dialog box appears and alerts the user.
-				*/
-					int indexInMap=0;
-					for(int i=0;i<segments.length;i++){
-						if(segments[i].equals(lstSegments.getSelectedValue())){
-							indexInMap = i;
-							break;
-						}
-					}
+                /*Adding a new segment must cope with the term of segment order.
+                //If the segment chosen appears before the last segment in the route,
+                an error dialog box appears and alerts the user.
+                */
+                int indexInMap=0;
+                for(int i=0;i<segments.length;i++){
+                    GeoSegment selectedGeoSegment = lstSegments.getSelectedValue();
+                    if(selectedGeoSegment != null && segments[i].equals(selectedGeoSegment)){
+                        indexInMap = i;
+                        break;
+                    }
+                }
 
-					if(highestIndexSelected!=-1&& indexInMap<highestIndexSelected)
-							JOptionPane.showMessageDialog(owner, "Segment order error!");
-					else {
-						indexInMap= lstSegments.getSelectedIndex();
-						pnlParent.addSegment(lstSegments.getSelectedValue());
-						highestIndexSelected=Math.max(indexInMap,highestIndexSelected);
-						model.removeElementAt(indexInMap);
-						lstSegments.setModel(model);
+                if (pnlParent.addSegment(lstSegments.getSelectedValue())) {
+                    //highestIndexSelected = Math.max(indexInMap, highestIndexSelected);
+                    model.removeElement(lstSegments.getSelectedValue());
+                    lstSegments.setModel(model);
+                }
+                else {
+                    JOptionPane.showMessageDialog(owner,"Segment order error!");
+                }
+			});
 
-				}
-			}});
 
 
 			//Pressing the cancel button
-			btnCancel.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						dispose();
-					}
-			});
+			btnCancel.addActionListener(e -> dispose());
 
 			// arrange components on grid
 			GridBagLayout gridbag = new GridBagLayout();
