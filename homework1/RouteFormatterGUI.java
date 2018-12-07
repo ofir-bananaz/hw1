@@ -146,20 +146,14 @@ public class RouteFormatterGUI extends JPanel {
 	 * 			RouteDirection.computeDirections(this.route,0)
 	 */
 	public boolean addSegment(GeoSegment segment) {
-		if (route == null)
-		{
+		if (route == null) {
 			route= new Route(segment);
-            System.out.format("first new route: %s \n", segment.toString());
-
-		}
-		else if (segment.getP1() == this.route.getEnd()) {
+		} else if (segment.getP1() == this.route.getEnd()) {
             route = route.addSegment(segment);
-            System.out.format("adding segment: %s \n", segment.toString());
-
-		}
-		else {
+		} else {
 			return false;
 		}
+		// Behavior if the segment was added legally
 		DefaultListModel<GeoSegment> model = (DefaultListModel<GeoSegment>) this.lstSegments.getModel();
 		model.addElement(segment);
 		this.lstSegments.setModel(model);

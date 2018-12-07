@@ -69,15 +69,6 @@ public class GeoSegmentsDialog extends JDialog {
                 //If the segment chosen appears before the last segment in the route,
                 an error dialog box appears and alerts the user.
                 */
-                int indexInMap=0;
-                for(int i=0;i<segments.length;i++){
-                    GeoSegment selectedGeoSegment = lstSegments.getSelectedValue();
-                    if(selectedGeoSegment != null && segments[i].equals(selectedGeoSegment)){
-                        indexInMap = i;
-                        break;
-                    }
-                }
-
                 if (pnlParent.addSegment(lstSegments.getSelectedValue())) {
                     //highestIndexSelected = Math.max(indexInMap, highestIndexSelected);
                     model.removeElement(lstSegments.getSelectedValue());
