@@ -148,7 +148,7 @@ public class Route {
   	/**
   	 * Returns direction of travel at the start of the route, in degrees.
    	 * @return direction (in compass heading) of travel at the start of the
-   	 *         route, in degrees.
+   	 *         route, in degrees OR -1.0 if the length of the first segment within geoSegmentArrayList is zero
    	 **/
   	public double getStartHeading() {
         return this.startHeading;
@@ -158,7 +158,7 @@ public class Route {
   	/**
   	 * Returns direction of travel at the end of the route, in degrees.
      * @return direction (in compass heading) of travel at the end of the
-     *         route, in degrees.
+     *         route, in degrees OR -1.0 if the length of the last segment within geoSegmentArrayList is zero
      **/
   	public double getEndHeading() {
         return this.endHeading;
