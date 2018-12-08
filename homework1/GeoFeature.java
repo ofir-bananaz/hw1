@@ -60,7 +60,7 @@ public class GeoFeature {
     // gf.length is the total length of the geographic feature, in kilometers
     // gf.heading is the irection of travel at the start of the geographic feature, in degrees
     // gf.heading is the irection of travel at the start of the geographic feature, in degrees
-    // gs.name e is given to all GeoSegment objects so that it is possible to
+    // gs.name is the name of the GeoFeature
     // gf.start is the location of the start of the geographic feature
     // gf.end is the location of the end of the geographic feature
     // GeoPoint endpoints.
@@ -94,8 +94,9 @@ public class GeoFeature {
   	}
 
 	/**
-	 * Constructs a new GeoFeature using old
-	 * @requires gs != null
+	 * Constructs a new GeoFeature using a list of GeoSegments w
+	 * @requires gs != null, dupList != null, all of which have
+	 *  the same name, for each element in the list the next element must correspond to the end point of the element.
 	 * @effects Constructs a new GeoFeature, r, such that
 	 *	        r.name = gs.name &&
 	 *          r.startHeading = gs.heading &&
@@ -103,7 +104,11 @@ public class GeoFeature {
 	 *          r.start = gs.p1 &&
 	 *          r.end = gs.p2
 	 **/
-	private GeoFeature(GeoSegment gsNew, ArrayList<GeoSegment> dupList, double oldLength) {
+	private GeoFeature(GeoSegment gsNew, ArrayList<GeoSegment> dupList) {
+		double oldLength =0.0;
+		for(GeoSegment itrGs : dupList) {
+			oldLength += itrGs.getLength();
+		}
 		GeoSegment gsFirst = dupList.get(0);
 		this.name = gsFirst.getName();
 		this.startHeading = gsFirst.getHeading();
@@ -169,8 +174,8 @@ public class GeoFeature {
 
   	/**
   	 * Returns direction of travel at the start of the geographic feature.
-     * @return direction (in standard heading) of travel at the start of the
-     *         geographic feature, in degrees.
+     * @return direction (in standard heading) of travel at the start of the geographic feature,
+	 *         in degrees OR -1.0 if the length of the first segment within geoSegmentArrayList is zero
      */
   	public double getStartHeading() {
   		return this.startHeading;
@@ -179,8 +184,8 @@ public class GeoFeature {
 
   	/**
   	 * Returns direction of travel at the end of the geographic feature.
-     * @return direction (in standard heading) of travel at the end of the
-     *         geographic feature, in degrees.
+     * @return direction (in standard heading) of travel at the end of the geographic feature,
+	 *         in degrees OR -1.0 if the length of the last segment within geoSegmentArrayList is zero
      */
   	public double getEndHeading() {
 		return this.endHeading;
@@ -209,7 +214,7 @@ public class GeoFeature {
      *    	   r.length = this.length + gs.length
      **/
   	public GeoFeature addSegment(GeoSegment gs) {
-		GeoFeature newGf = new GeoFeature(gs,this.geoSegmentArrayList, this.length);
+		GeoFeature newGf = new GeoFeature(gs,this.geoSegmentArrayList);
 		return newGf;
   	}
 
