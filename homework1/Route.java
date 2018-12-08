@@ -34,17 +34,25 @@ import java.util.Iterator;
  **/
 public class Route {
 
-    private GeoPoint start;       // location of the start of the geographic feature
-    private GeoPoint end;         // location of the end of the geographic feature
-    private double startHeading;  // direction of travel at the start of the geographic feature, in degrees
-    private double endHeading;    // direction of travel at the end of the geographic feature, in degrees
-    private ArrayList<GeoSegment> geoSegmentsSequence;      // a sequence of segments that make up this geographic feature
-    private ArrayList<GeoFeature> geoFeatureSequence;      // a sequence of segments that make up this geographic feature
-    private double length;          // total length of the geographic feature, in kilometers
-    private GeoSegment endingGeoSegment;
+    private final GeoPoint start;       // location of the start of the geographic feature
+    private final GeoPoint end;         // location of the end of the geographic feature
+    private final double startHeading;  // direction of travel at the start of the geographic feature, in degrees
+    private final double endHeading;    // direction of travel at the end of the geographic feature, in degrees
+    private final ArrayList<GeoSegment> geoSegmentsSequence;      // a sequence of segments that make up this geographic feature
+    private final ArrayList<GeoFeature> geoFeatureSequence;      // a sequence of segments that make up this geographic feature
+    private final double length;          // total length of the geographic feature, in kilometers
+    private final GeoSegment endingGeoSegment;
+
+    // Abstraction Function:
+    // Represent a Route rt with GeoSegment gs:
+    //<rt.startHeading,rt.endHeading> = <gs.getHeading(),gs.getHeading()>
+    //<rt.start,rt.end> = <gs.getP1(),gs.getP2()>
+    //rt.length = gs.getLength()
+
+    // Representation invariant for every Route rt:
+    // gs != NULL
 
 
-    /* TODO Write abstraction function and representation invariant*/
     /**
   	 * Constructs a new Route.
      * @requires gs != null
@@ -66,6 +74,7 @@ public class Route {
         this.length = gs.getLength();
         GeoFeature gf = new GeoFeature(gs);
         this.geoFeatureSequence.add(gf);
+        checkRep();
     }
 
     /**
@@ -86,7 +95,6 @@ public class Route {
         this.start = gsFirst.getP1();
         this.end = gsNew.getP2();
         this.length = oldLength + gsNew.getLength();
-        this.endingGeoSegment = gsNew;
         this.geoSegmentsSequence = new ArrayList<>(oldRoute.getGeoSegmentSequence());
         this.geoSegmentsSequence.add(gsNew);
 
@@ -107,7 +115,16 @@ public class Route {
             gfNew = new GeoFeature(gsNew);
         }
         this.geoFeatureSequence.add(gfNew);
+        checkRep();
 
+    }
+    /**
+     * checks if rep.invariant is being violated.
+     * @throws AssertionError if representation invariant is violated.
+     */
+    private void checkRep(){
+        assert(this.endingGeoSegment!=null):
+                "illegal null geoSegment input!";
     }
 
     /**
