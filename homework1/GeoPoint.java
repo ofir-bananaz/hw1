@@ -88,10 +88,21 @@ public class GeoPoint {
   	public GeoPoint(int latitude, int longitude) {
 		this.latitude=latitude;
 		this.longitude=longitude;
+		checkRep();
   	}
 
-  	 
-  	/**
+	/**
+	 * checks if rep.invariant is being violated.
+	 * @throws AssertionError if representation invariant is violated.
+	 */
+  	private void checkRep(){
+		assert((this.longitude <= MAX_LONGITUDE) && (this.longitude >= MIN_LONGITUDE)):
+				"longitude is not within legal limits!";
+		assert((this.latitude <= MAX_LATITUDE) && (this.latitude >= MIN_LATITUDE)):
+				"latitude is not within legal limits!";
+  	}
+
+	/**)
      * Returns the latitude of this.
      * @return the latitude of this in millionths of degrees.
      */
@@ -204,3 +215,4 @@ public class GeoPoint {
 		return "("+latitude+","+longitude+")";
   	}
 }
+

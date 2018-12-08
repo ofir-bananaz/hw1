@@ -44,9 +44,8 @@ public class Route {
     private GeoSegment endingGeoSegment;
 
 
-    // TODO Write abstraction function and representation invariant
-
-  	/**
+    /* TODO Write abstraction function and representation invariant*/
+    /**
   	 * Constructs a new Route.
      * @requires gs != null
      * @effects Constructs a new Route, r, such that

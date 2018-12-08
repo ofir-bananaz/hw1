@@ -90,6 +90,7 @@ public class GeoFeature {
 		this.length = gs.getLength();
 		this.geoSegmentArrayList= new ArrayList<>();
 		this.geoSegmentArrayList.add(gs);
+		checkRep();
   	}
 
 	/**
@@ -112,8 +113,24 @@ public class GeoFeature {
 		this.length = oldLength + gsNew.getLength();
 		this.geoSegmentArrayList = new ArrayList<>(dupList);
 		this.geoSegmentArrayList.add(gsNew);
+		checkRep();
 	}
 
+	/**
+	 * checks if rep.invariant is being violated.
+	 * @throws AssertionError if representation invariant is violated.
+	 */
+	private void checkRep(){
+		assert(this.name!=null):
+				"illegal null name input!";
+		assert(this.start!=null):
+				"illegal null starting point input!";
+		assert(this.end!=null):
+				"illegal null ending point input!";
+		assert(this.geoSegmentArrayList.get(geoSegmentArrayList.size()-1)!=null):
+				"illegal null segment input!";
+		//double type variables can't be null so no there is no assert for startHeading and endHeading.
+	}
 
 	/**
 	 * Returns name of geographic feature.

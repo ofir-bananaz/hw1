@@ -68,8 +68,22 @@ public class GeoSegment  {
 		this.name = name;
 		this.p1 = p1;
 		this.p2 = p2;
+		checkRep();
 	}
-
+	/**
+	 * checks if rep.invariant is being violated.
+	 * @throws AssertionError if representation invariant is violated.
+	 */
+	private void checkRep(){
+		assert(name!=null):
+				"illegal null name input!";
+		assert(p1!=null):
+				"illegal null point1 input!";
+		assert(p2!=null):
+				"illegal null point2 input!";
+		assert(p1!=p2):
+				"illegal equality of point1 and point2";
+	}
 
 	/**
 	 * Returns a new GeoSegment like this one, but with its endpoints reversed.
