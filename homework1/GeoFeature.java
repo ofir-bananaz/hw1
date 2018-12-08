@@ -273,8 +273,7 @@ public class GeoFeature {
      * @return a hash code for this.
      **/
   	public int hashCode() {
-    	// This implementation will work, but you may want to modify it
-    	// improved performance.
+
 
     	return 1;
   	}

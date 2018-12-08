@@ -279,10 +279,11 @@ public class Route {
      * @return a hash code for this.
      **/
   	public int hashCode() {
-    	// This implementation will work, but you may want to modify it
-    	// for improved performance.
-
-    	return 1;
+        //We will use the Cantor pairing function.
+        //https://en.wikipedia.org/wiki/Cantor_pairing_function#Cantor_pairing_function
+        int x = this.start.hashCode();
+        int y = this.end.hashCode();
+        return (((x+y)*(x+y+1)/2)+y);
   	}
 
 
